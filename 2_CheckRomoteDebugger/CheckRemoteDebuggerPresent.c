@@ -8,19 +8,19 @@ int main() {
     BOOL isDebuggerPresent = FALSE;
     HANDLE hProcess = GetCurrentProcess();
 
-    // Kiểm tra xem có trình gỡ lỗi từ xa đang gắn vào quá trình này không
-    if (CheckRemoteDebuggerPresent(hProcess, &isDebuggerPresent)) {
-        if (isDebuggerPresent) {
-            printf("Debugger detected.\n");
-        } else {
-            printf("Successfully accessed.\n");
-        }
-    } else {
-        printf("Failed to check for debugger presence.\n");
+    if (!CheckRemoteDebuggerPresent(GetCurrentProcess(), &isDebuggerPresent)) {
+        printf("Khong the kiem tra trinh go loi tu xa\n");
+        return 1;
     }
 
-    // Đóng handle của tiến trình
-    CloseHandle(hProcess);
+    // Nếu isDebuggerPresent là TRUE, có remote debugger đang chạy
+    if (isDebuggerPresent) {
+            printf("Co trinh go loi tu xa dang hoat dong.\n");
+    } 
+
+    else {
+        printf("Khong co trinh go loi tu xa hoat dong.\n");
+    }
 
     return 0;
 }
